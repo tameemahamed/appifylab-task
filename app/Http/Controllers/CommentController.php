@@ -39,4 +39,22 @@ class CommentController extends Controller
         ], 201);
 
     }
+
+    public function likeButton(Request $request) {
+        $rules = [
+            'comment_id' => 'required|exists:comments,id'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        Comment::addLike($request->comment_id);
+    }
+
 }

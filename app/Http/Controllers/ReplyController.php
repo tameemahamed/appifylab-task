@@ -40,4 +40,21 @@ class ReplyController extends Controller
         ], 201);
 
     }
+
+    public function likeButton(Request $request) {
+        $rules = [
+            'reply_id' => 'required|exists:replies,id'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        Reply::addLike($request->reply_id);
+    }
 }

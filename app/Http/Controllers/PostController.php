@@ -15,9 +15,9 @@ class PostController extends Controller
         // rules and validation
         
         $rules = [
-            'text'   => 'required|string|max:5000',
-            'image'     => 'nullable|image|mimes:png,jpg,jpeg|max:4096',
-            'visibility'=> 'required|boolean',
+            'text' => 'required|string|max:5000',
+            'image' => 'nullable|image|mimes:png,jpg,jpeg|max:4096',
+            'visibility' => 'required|boolean',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -32,7 +32,7 @@ class PostController extends Controller
         // store image and create post
         $tempPath = null;
 
-        if($request->hasFile('iamge')) {
+        if($request->hasFile('image')) {
             $tempPath = $request->file('image')->store('temp');
         }
 
@@ -47,5 +47,22 @@ class PostController extends Controller
             'status' => 'accepted',
             'message' => 'Post is being created.',
         ], 202);
+    }
+
+    public function likeButton(Request $request) {
+        $rules = [
+            'post_id' => 'required|exists:posts,id'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+        
+        Post::addLike($request->post_id);
     }
 }

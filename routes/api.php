@@ -14,4 +14,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('add-post', [PostController::class, 'addPost']);
     Route::post('add-comment', [CommentController::class, 'addComment']);
     Route::post('add-reply', [ReplyController::class, 'addReply']);
+    Route::post('post-like-button', [PostController::class, 'likeButton']);
+    Route::post('comment-like-button', [CommentController::class, 'likeButton']);
+    Route::post('reply-like-button', [ReplyController::class, 'likeButton']);
 });
