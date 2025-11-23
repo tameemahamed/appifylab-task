@@ -65,4 +65,14 @@ class PostController extends Controller
         
         Post::addLike($request->post_id);
     }
+
+    public function latestPosts(Request $request) {
+        return Post::with('author:id,name,display_picture_url')
+                    ->with('lastComment.author:id,name,display_picture_url')
+                    ->withExists('authLike')
+                    ->withCount('likes')
+                    ->withCount('comments')
+                    ->latest()
+                    ->paginate(5);
+    }
 }

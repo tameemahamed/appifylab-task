@@ -18,3 +18,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('comment-like-button', [CommentController::class, 'likeButton']);
     Route::post('reply-like-button', [ReplyController::class, 'likeButton']);
 });
+
+Route::middleware('auth:sanctum')->group(function() {
+    Route::get('posts', [PostController::class, 'latestPosts']);
+});
