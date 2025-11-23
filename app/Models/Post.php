@@ -42,6 +42,13 @@ class Post extends Model
                 ->withExists('authLike');
     }
 
+    public function allComments() {
+        return $this->hasMany(Comment::class)
+                ->withCount('likes')
+                ->withExists('authLike')
+                ->with('allReplies.author:id,name,display_picture_url');
+    }
+
     public static function addLike($postId) {
         $userId = Auth::id();
         $liked = PostLike::where('user_id', $userId)

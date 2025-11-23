@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->group(function() {
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('posts', [PostController::class, 'latestPosts']);
+    Route::get('post/{post_id}', [PostController::class, 'postInfo']);
 });

@@ -75,4 +75,14 @@ class PostController extends Controller
                     ->latest()
                     ->paginate(5);
     }
+
+    public function postInfo($post_id) {
+        return Post::with('author:id,name,display_picture_url')
+                    ->with('allComments.author:id,name,display_picture_url')
+                    ->withExists('authLike')
+                    ->withCount('likes')
+                    ->withCount('comments')
+                    ->where('id', $post_id)
+                    ->first();
+    }
 }

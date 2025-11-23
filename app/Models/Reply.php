@@ -14,6 +14,20 @@ class Reply extends Model
         'content'
     ];
 
+    public function author() {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function likes() {
+        return $this->hasMany(ReplyLike::class);
+    }
+
+    public function authLike() {
+        $userId = Auth::id() ?? 0;
+        return $this->hasOne(ReplyLike::class)
+                    ->where('user_id', $userId);
+    }
+
     public static function addLike($replyId) {
         $userId = Auth::id();
         $liked = ReplyLike::where('user_id', $userId)

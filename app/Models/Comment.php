@@ -29,6 +29,12 @@ class Comment extends Model
                     ->where('user_id', $userId);
     }
 
+    public function allReplies() {
+        return $this->hasMany(Reply::class)
+                    ->withCount('likes')
+                    ->withExists('authLike');
+    }
+
     protected $fillable = [
         'post_id',
         'user_id',
