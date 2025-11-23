@@ -34,14 +34,21 @@ class CreatePostJob implements ShouldQueue
         //
         $path = null;
 
-        if($this->tempPath && Storage::disk('local')->exists($this->tempPath)) {
-            $filename = Str::random(6).'_'. basename($this->tempPath);
-            $path = 'posts/'.$filename;
+        if ($this->tempPath && Storage::disk('local')->exists($this->tempPath)) {
+            $filename = Str::random(6) . '_' . basename($this->tempPath);
+
+            $publicDir = public_path('storage/post');
+            if (!is_dir($publicDir)) {
+                mkdir($publicDir, 0755, true);
+            }
 
             $contents = Storage::disk('local')->get($this->tempPath);
-            Storage::disk('public')->put($path, $contents);
+            $fullPublicPath = $publicDir . DIRECTORY_SEPARATOR . $filename;
+            file_put_contents($fullPublicPath, $contents);
 
             Storage::disk('local')->delete($this->tempPath);
+
+            $path = 'storage/post/' . $filename;
         }
 
         Post::create([
@@ -52,4 +59,5 @@ class CreatePostJob implements ShouldQueue
             'created_at' => now()
         ]);
     }
+
 }
