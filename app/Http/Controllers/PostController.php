@@ -7,6 +7,8 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use function Pest\Laravel\json;
+use function PHPUnit\Framework\isNull;
 
 class PostController extends Controller
 {
@@ -67,7 +69,12 @@ class PostController extends Controller
     }
 
     public function latestPosts(Request $request) {
-        return Post::with('author:id,name,display_picture_url')
+        return Post::where('visibility', 1)
+                    ->orWhere(function($q) {
+                        $q->where('visibility', 0)
+                          ->where('author_id', Auth::id());
+                    })
+                    ->with('author:id,name,display_picture_url')
                     ->with('lastComment.author:id,name,display_picture_url')
                     ->withExists('authLike')
                     ->withCount('likes')
@@ -77,6 +84,22 @@ class PostController extends Controller
     }
 
     public function postInfo($post_id) {
+        $userId = Auth::id();
+        $post = Post::where('id', $post_id)
+                        ->first();
+
+        if($post === null) {
+            return response()->json([
+                'status' => 'not found'
+            ], 404);
+        }
+
+        if($post->visibility == 0 && $post->author_id != $userId) {
+            return response()->json([
+                'status' => 'unauthorized'
+            ], 401);
+        }
+        
         return Post::with('author:id,name,display_picture_url')
                     ->with('allComments.author:id,name,display_picture_url')
                     ->withExists('authLike')
