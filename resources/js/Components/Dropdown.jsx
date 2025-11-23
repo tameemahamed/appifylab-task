@@ -23,13 +23,17 @@ const Trigger = ({ children }) => {
 
     return (
         <>
-            <div onClick={toggleOpen}>{children}</div>
+            {/* keep wrapper simple so you can pass your custom button */}
+            <div onClick={toggleOpen} className="cursor-pointer">
+                {children}
+            </div>
 
+            {/* backdrop to close when clicking outside */}
             {open && (
                 <div
                     className="fixed inset-0 z-40"
                     onClick={() => setOpen(false)}
-                ></div>
+                />
             )}
         </>
     );
@@ -38,7 +42,7 @@ const Trigger = ({ children }) => {
 const Content = ({
     align = 'right',
     width = '48',
-    contentClasses = 'py-1 bg-white dark:bg-gray-700',
+    contentClasses = 'py-1 bg-gray-900',
     children,
 }) => {
     const { open, setOpen } = useContext(DropDownContext);
@@ -72,11 +76,9 @@ const Content = ({
                     className={`absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
                     onClick={() => setOpen(false)}
                 >
+                    {/* darker ring + dark background by default; contentClasses can override */}
                     <div
-                        className={
-                            `rounded-md ring-1 ring-black ring-opacity-5 ` +
-                            contentClasses
-                        }
+                        className={`rounded-md ring-1 ring-gray-700 ${contentClasses}`}
                     >
                         {children}
                     </div>
@@ -91,7 +93,7 @@ const DropdownLink = ({ className = '', children, ...props }) => {
         <Link
             {...props}
             className={
-                'block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-gray-300 dark:hover:bg-gray-800 dark:focus:bg-gray-800 ' +
+                'block w-full px-4 py-2 text-start text-sm leading-5 text-gray-200 transition duration-150 ease-in-out hover:bg-gray-800 focus:bg-gray-800 focus:outline-none ' +
                 className
             }
         >
