@@ -1,4 +1,4 @@
-# Full Stack Socialmedia WEB App
+# Full Stack Socialmedia Web App
 
 A Laravel + Inertia (React) starter app used to demonstrate a small social feed (posts, comments, authentication) and a matching frontend built with React + Inertia + Tailwind CSS. This README explains how to get the project running locally, the frontend structure, and the backend structure.
 
@@ -11,9 +11,9 @@ A Laravel + Inertia (React) starter app used to demonstrate a small social feed 
 
 ## Table of Contents
 
-- Getting Started
-- Frontend Documentation
-- Backend Documentation
+* [Getting Started](#getting-started)
+* [Frontend Documentation](#frontend-documentation)
+* [Backend Documentation](#backend-documentation)
 
 ## Getting Started
 These instructions will get the project running on your local machine for development and testing purposes.
